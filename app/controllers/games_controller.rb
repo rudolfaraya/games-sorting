@@ -3,7 +3,11 @@ class GamesController < ApplicationController
 
   # GET /games or /games.json
   def index
-    @games = Game.all
+    if params[:column].present?
+      @games = Game.includes(:genre, :platform).order("#{params[:column]} #{params[:direction]}")
+    else
+      @games = Game.includes(:genre, :platform).all
+    end
   end
 
   # GET /games/1 or /games/1.json
