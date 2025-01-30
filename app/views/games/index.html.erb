@@ -1,8 +1,14 @@
 <%= turbo_refresh_method_tag :morph %>
 <%= turbo_refresh_scroll_tag :preserve %>
-<div class="max-w-7xl mx-auto mt-12">
-  <div class="shadow overflow-hidden rounded border-b border-gray-200">
-    <table class="min-w-full bg-white">
+<div class="max-w-7xl mx-auto mt-12 w-full">
+  <div class="shadow rounded border-b border-gray-200">
+    <div class="flex justify-end mb-1">
+      <%= form_with url: games_path, method: :get do |form| %>
+        <%= form.text_field :title, placeholder: "Buscar por título", value: params[:title], class: "border border-blue-500 rounded p-2" %>
+        <%= form.button "Buscar", class: "bg-blue-500 text-white p-2 rounded-sm" %>
+      <% end %>
+    </div>
+    <table class="bg-white min-w-full">
       <thead class="bg-gray-800 text-white">
         <tr>
           <th id="games-title" class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">

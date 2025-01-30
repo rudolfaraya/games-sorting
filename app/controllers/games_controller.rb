@@ -3,11 +3,9 @@ class GamesController < ApplicationController
 
   # GET /games or /games.json
   def index
-    if params[:column].present?
-      @games = Game.includes(:genre, :platform).order("#{params[:column]} #{params[:direction]}")
-    else
-      @games = Game.includes(:genre, :platform).all
-    end
+    @games = Game.includes(:genre, :platform)
+    @games = @games.where("games.title like ?", "%#{params[:title]}%") if params[:title].present?
+    @games = @games.order(params.slice("column", "direction").values.join(" "))
   end
 
   # GET /games/1 or /games/1.json
