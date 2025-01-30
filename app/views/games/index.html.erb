@@ -6,6 +6,7 @@
       <%= form_with url: games_path, method: :get, data: { turbo_action: "replace", controller: "autosubmit", turbo_permanent: "" } do |form| %>
         <%= form.text_field :title,
           placeholder: "Buscar por nombre",
+          value: session.dig("filters", "title"),
           class: "border border-blue-500 rounded p-2",
           data: {
             action: "autosubmit#submit"

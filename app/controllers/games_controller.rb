@@ -3,9 +3,12 @@ class GamesController < ApplicationController
 
   # GET /games or /games.json
   def index
+    session["filters"] ||= {}
+    session["filters"].merge!(filters_params)
+
     @games = Game.includes(:genre, :platform)
-    @games = @games.where("games.title like ?", "%#{params[:title]}%") if params[:title].present?
-    @games = @games.order(params.slice("column", "direction").values.join(" "))
+    @games = @games.where("games.title like ?", "%#{session["filters"]["title"]}%") if session["filters"]["title"].present?
+    @games = @games.order(session["filters"].slice("column", "direction").values.join(" "))
   end
 
   # GET /games/1 or /games/1.json
@@ -68,5 +71,9 @@ class GamesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def game_params
       params.require(:game).permit(:title, :genre_id, :platform_id)
+    end
+
+    def filters_params
+      params.permit(:title, :column, :direction)
     end
 end
